@@ -37,6 +37,8 @@ class Ability(Base):
     ability_type_id: Mapped[int] = mapped_column(ForeignKey("ability_types.id"))
     hero_id: Mapped[int] = mapped_column(ForeignKey("heroes.id"))
 
+    ability_types: Mapped["AbilityType"] = relationship(back_populates= "abilities")
+
     heroes: Mapped["Hero"] = relationship(back_populates= "abilities")
 
     def __repr__(self) -> str:
@@ -67,6 +69,8 @@ class AbilityType(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(30))
+
+    abilities: Mapped[List["Ability"]] = relationship(back_populates="ability_types", cascade="all, delete-orphan")
 
     def __repr__(self) -> str:
         return f"""AbilityType(id={self.id!r},

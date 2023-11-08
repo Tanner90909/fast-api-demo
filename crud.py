@@ -12,10 +12,14 @@ def get_heroes_v1(db:Session):
 
 def get_heroes(db:Session):
     # set a variable to store the query info
-    heroes_query = (
+    heroes_with_abilities = (
         db.query(Hero)
-        .join(Hero.abilities)
+        .options(joinedload(Hero.abilities).joinedload(Ability.ability_types))
         .all()
     )
 
-    return heroes_query
+    heroes = {}
+    for hero in heroes_with_abilities
+
+    hero_models = list(heroes.values())
+    return hero_models

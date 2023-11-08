@@ -16,8 +16,8 @@ class Hero(Base):
     biography: Mapped[str] = Column(String, default="Biography")
     image_url: Mapped[str] = Column(String, default="img url")
 
-    # abilities: Mapped[List["Ability"]] = relationship(
-    #     back_populates="heroes", cascade="all, delete-orphan")
+    abilities: Mapped[List["Ability"]] = relationship(
+        back_populates="heroes", cascade="all, delete-orphan")
     
     # relationships: Mapped[List["Relationship"]] = relationship(
     #     back_populates="heroes", cascade="all, delete-orphan")
@@ -37,7 +37,7 @@ class Ability(Base):
     ability_type_id: Mapped[int] = mapped_column(ForeignKey("ability_types.id"))
     hero_id: Mapped[int] = mapped_column(ForeignKey("heroes.id"))
 
-    # hero: Mapped["Hero"] = relationship(back_populates= "abilities")
+    heroes: Mapped["Hero"] = relationship(back_populates= "abilities")
 
     def __repr__(self) -> str:
         return f"""Ability(id={self.id!r}, 
@@ -48,8 +48,8 @@ class Relationship(Base):
     __tablename__ = "relationships"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    hero1_id: Mapped[int] = mapped_column(ForeignKey("heroes.id"))
-    hero2_id: Mapped[int] = mapped_column(ForeignKey("heroes.id"))
+    hero1_id: Mapped[int] = mapped_column(Integer, ForeignKey("heroes.id"))
+    hero2_id: Mapped[int] = mapped_column(Integer, ForeignKey("heroes.id"))
     relationship_type_id: Mapped[int] = mapped_column(ForeignKey("relationship_types.id"))
 
     # hero1: Mapped["Hero"] = relationship(back_populates= "relationships")
@@ -66,7 +66,7 @@ class AbilityType(Base):
     __tablename__ = "ability_types"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    name: Mapped[str] = mapped_column
+    name: Mapped[str] = mapped_column(String(30))
 
     def __repr__(self) -> str:
         return f"""AbilityType(id={self.id!r},
@@ -76,7 +76,7 @@ class RelationshipType(Base):
     __tablename__ = "relationship_types"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    name: Mapped[str] = mapped_column
+    name: Mapped[str] = mapped_column(String(30))
 
     def __repr__(self) -> str:
         return f"""RelationshipType(id={self.id!r},

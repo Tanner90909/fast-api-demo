@@ -1,26 +1,26 @@
 from typing import List
 from typing import Optional
-
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import Boolean, String, ForeignKey, Integer, Column
 
+class Base (DeclarativeBase):
+    pass
 
-from database import Base
 
 class Hero(Base):
     __tablename__ = "heroes"
 
-    id = Column(Integer, primary_key = True, index = True)
-    name = Column(String)
-    about_me = Column(String)
-    biography = Column(String)
-    image_url = Column(String)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = Column(String, default="Name")
+    about_me: Mapped[str] = Column(String, default="About me")
+    biography: Mapped[str] = Column(String, default="Biography")
+    image_url: Mapped[str] = Column(String, default="img url")
 
-    abilities: Mapped[List["Ability"]] = relationship(
-        back_populates="heroes", cascade="all, delete-orphan")
+    # abilities: Mapped[List["Ability"]] = relationship(
+    #     back_populates="heroes", cascade="all, delete-orphan")
     
-    relationships: Mapped[List["Relationship"]] = relationship(
-        back_populates="heroes", cascade="all, delete-orphan")
+    # relationships: Mapped[List["Relationship"]] = relationship(
+    #     back_populates="heroes", cascade="all, delete-orphan")
     
     def __repr__(self) -> str:
         return f"""Hero(id={self.id!r}, 
@@ -37,7 +37,7 @@ class Ability(Base):
     ability_type_id: Mapped[int] = mapped_column(ForeignKey("ability_types.id"))
     hero_id: Mapped[int] = mapped_column(ForeignKey("heroes.id"))
 
-    hero: Mapped["Hero"] = relationship(back_populates= "abilities")
+    # hero: Mapped["Hero"] = relationship(back_populates= "abilities")
 
     def __repr__(self) -> str:
         return f"""Ability(id={self.id!r}, 
@@ -52,8 +52,8 @@ class Relationship(Base):
     hero2_id: Mapped[int] = mapped_column(ForeignKey("heroes.id"))
     relationship_type_id: Mapped[int] = mapped_column(ForeignKey("relationship_types.id"))
 
-    hero1: Mapped["Hero"] = relationship(back_populates= "relationships")
-    hero2: Mapped["Hero"] = relationship(back_populates= "relationships")
+    # hero1: Mapped["Hero"] = relationship(back_populates= "relationships")
+    # hero2: Mapped["Hero"] = relationship(back_populates= "relationships")
 
     def __repr__(self) -> str:
         return f"""Relationship(id={self.id!r}, 
